@@ -36,7 +36,10 @@ func (u *unsplashProvider) Authenticate(auth Authentication) error {
 }
 
 func (u *unsplashProvider) GetRandom(query string) (string, error) {
-	queryUrl := fmt.Sprintf("https://api.unsplash.com/photos/random?query=%s", url.QueryEscape(query))
+	queryUrl := fmt.Sprintf(
+		"https://api.unsplash.com/photos/random?query=%s?orientation=landscape",
+		url.QueryEscape(query),
+	)
 	byteRes := networking.Fetch(u.getNetworkCtx(queryUrl))
 	var result *randomResponse = &randomResponse{}
 	json.Unmarshal(byteRes, result)
@@ -64,7 +67,10 @@ func (u *unsplashProvider) GetSupportedAuthStrategy() AuthStrategy {
 }
 
 func (u *unsplashProvider) getQueryURL(q string) string {
-	return fmt.Sprintf("https://api.unsplash.com/photos/random?query=%s", url.QueryEscape(q))
+	return fmt.Sprintf(
+		"https://api.unsplash.com/photos/random?query=%s?orientation=landscape",
+		url.QueryEscape(q),
+	)
 }
 
 func (u *unsplashProvider) getNetworkCtx(url string) networking.RequestCtx {
